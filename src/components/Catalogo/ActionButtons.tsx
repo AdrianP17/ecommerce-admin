@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Upload } from "lucide-react";
 import AddProductModal from "./AddProductModal";
 import AddProductButton from "./AddProductButton";

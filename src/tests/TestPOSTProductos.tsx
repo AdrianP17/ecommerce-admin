@@ -1,35 +1,33 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { usePostData } from "../hooks/general/usePostData";
 import { createProducto } from "../services/catalogo/ProductoService";
-import type { NuevoProducto } from "../types/catalogo/Productos";
 
 const TestPostProducto: React.FC = () => {
   const {
     data: nuevoProducto,
     loading,
     error,
-    postData: postProducto,
   } = usePostData(createProducto);
 
-  useEffect(() => {
-    const probarPost = async () => {
-      console.log("🚀 Enviando nuevo producto...");
+  // useEffect(() => {
+  //   const probarPost = async () => {
+  //     console.log("🚀 Enviando nuevo producto...");
 
-      const nuevo: NuevoProducto = {
-        nombre: "Licra deportiva",
-        descripcion: "Licra deportiva para mujer",
-        imagenesBase64: [],
-      };
+  //     const nuevo: NuevoProducto = {
+  //       nombre: "Licra deportiva",
+  //       descripcion: "Licra deportiva para mujer",
+  //       imagenesBase64: [],
+  //     };
 
-      try {
-        await postProducto(nuevo);
-      } catch (err) {
-        console.error("❌ Error al crear producto:", err);
-      }
-    };
+  //     try {
+  //       await postProducto(nuevo);
+  //     } catch (err) {
+  //       console.error("❌ Error al crear producto:", err);
+  //     }
+  //   };
 
-    probarPost();
-  }, [postProducto]);
+  //   probarPost();
+  // }, [postProducto]);
 
   return (
     <div className="p-4 space-y-3">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import AddAtributoModal from "../../components/Catalogo/AddAtributoModal";
 import AtributosTable from "../../components/Catalogo/AtributosTable";
@@ -12,8 +12,8 @@ type Atributo = {
 
 const ITEMS_PER_PAGE = 5;
 
-const AtributosPage: React.FC = () => {
-  const [atributos, setAtributos] = useState<Atributo[]>([
+const AtributosPage = () => {
+  const [atributos] = useState<Atributo[]>([
     { id: 1, atributo: "Color", tipo: "Texto", valor: "Rojo" },
     { id: 2, atributo: "Tamaño", tipo: "Número", valor: "42" },
     { id: 3, atributo: "Material", tipo: "Texto", valor: "Algodón" },
@@ -53,19 +53,6 @@ const AtributosPage: React.FC = () => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     );
-  };
-
-  const handleSelectAll = (selectAll: boolean) => {
-    if (selectAll) {
-      setSelectedIds(currentItems.map((a) => a.id));
-    } else {
-      setSelectedIds([]);
-    }
-  };
-
-  const handleAddAtributo = (atributo: Atributo) => {
-    setAtributos((prev) => [...prev, { ...atributo, id: prev.length + 1 }]);
-    setShowModal(false);
   };
 
   const goToPrevious = () => {
@@ -123,7 +110,6 @@ const AtributosPage: React.FC = () => {
           atributos={currentItems}
           selectedIds={selectedIds}
           onSelect={handleSelect}
-          onSelectAll={handleSelectAll}
         />
       </div>
 
@@ -156,7 +142,6 @@ const AtributosPage: React.FC = () => {
       {showModal && (
         <AddAtributoModal
           onClose={() => setShowModal(false)}
-          onSubmit={handleAddAtributo}
         />
       )}
     </div>

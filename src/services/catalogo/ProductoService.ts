@@ -23,3 +23,12 @@ export const createProducto = async (formData: FormData) => {
 
   return res.json();
 };
+
+export const getProductoById = async (id: string | number) => {
+  const res = await fetch(`${API_BASE_URL}/api/productos/${id}`);
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Error al cargar producto ${id}: ${res.status}${text ? ` - ${text}` : ""}`);
+  }
+  return res.json();
+};

@@ -1,6 +1,10 @@
-import React from "react";
+interface Props {
+  categorias: Array<string | null | undefined>;
+  value: string;
+  onChange: (value: string) => void;
+}
 
-const CategoryFilter = ({ categorias, value, onChange }) => (
+const CategoryFilter = ({ categorias, value, onChange }: Props) => (
   <select
     value={value}
     onChange={(e) => onChange(e.target.value)}

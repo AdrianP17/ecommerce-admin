@@ -1,11 +1,20 @@
+interface LabeledInputProps {
+  label: string;
+  value?: string | number;
+  onChange: (value: string) => void;
+  type?: string;
+  min?: number | string;
+  step?: number | string;
+}
+
 export default function LabeledInput({
   label,
-  value,
+  value = "",
   onChange,
   type = "text",
   min,
   step,
-}) {
+}: LabeledInputProps) {
   return (
     <>
       <label>{label}</label>

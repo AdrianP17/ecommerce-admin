@@ -1,6 +1,9 @@
 import { Plus } from "lucide-react";
+interface AddProductButtonProps {
+  onClick: () => void;
+}
 
-export default function AddProductButton({ onClick }) {
+export default function AddProductButton({ onClick } : AddProductButtonProps) {
   return (
     <button
       onClick={onClick}

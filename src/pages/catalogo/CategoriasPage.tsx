@@ -9,8 +9,21 @@ import AddProductModal from "../../components/Catalogo/AddProductModal";
 
 const ITEMS_PER_PAGE = 5;
 
+type ProductoImagen = { principal?: boolean; imagen?: string };
+type AtributoValor = { valor?: string };
+type ProductoAtributo = { atributoValor?: AtributoValor };
+type Variante = { precio?: number; sku?: string };
+type Producto = {
+  id: number;
+  nombre?: string;
+  descripcion?: string;
+  productoAtributos?: ProductoAtributo[];
+  productoImagenes?: ProductoImagen[];
+  variantes?: Variante[];
+};
+
 const CategoriasPage: React.FC = () => {
-  const [productos, setProductos] = useState<any[]>([]);
+  const [productos, setProductos] = useState<Producto[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [textFilter, setTextFilter] = useState("");
   const [categoriaFilter, setCategoriaFilter] = useState("");
@@ -26,10 +39,14 @@ const CategoriasPage: React.FC = () => {
     try {
       const data = await getProductos();
       console.log("Productos recibidos:", data);
-      setProductos(data);
-    } catch (err: any) {
+      setProductos(data as Producto[]);
+    } catch (err: unknown) {
       console.error("Error al cargar productos:", err);
-      setError(err.message || "Error al cargar productos");
+      if (err instanceof Error) {
+        setError(err.message || "Error al cargar productos");
+      } else {
+        setError(String(err) || "Error al cargar productos");
+      }
     } finally {
       setLoading(false);
     }
@@ -54,16 +71,13 @@ const CategoriasPage: React.FC = () => {
   const categoriasUnicas = Array.from(
     new Set(
       productos
-        .map(
-          (p) =>
-            p.productoAtributos?.find(
-              (a) => a.atributoValor?.valor
-            )?.atributoValor?.valor
+        .map((p) =>
+          p.productoAtributos?.find((a: ProductoAtributo) => Boolean(a?.atributoValor?.valor))
+            ?.atributoValor?.valor
         )
-        .filter(Boolean)
+        .filter(Boolean) as string[]
     )
   );
-
 
   useEffect(() => {
     setCurrentPage(1);
@@ -71,12 +85,11 @@ const CategoriasPage: React.FC = () => {
 
   const productosFiltrados = productos.filter((p) => {
     const categoria =
-      p.productoAtributos?.find((a) => a.atributoValor?.valor)?.atributoValor
-        ?.valor || "";
+      p.productoAtributos?.find((a: ProductoAtributo) => Boolean(a?.atributoValor?.valor))
+        ?.atributoValor?.valor || "";
 
-    const cumpleTexto = p.nombre
-      .toLowerCase()
-      .includes(textFilter.toLowerCase());
+    const nombre = p.nombre || "";
+    const cumpleTexto = nombre.toLowerCase().includes(textFilter.toLowerCase());
 
     const cumpleCategoria = categoriaFilter
       ? categoria.toLowerCase() === categoriaFilter.toLowerCase()
@@ -119,7 +132,6 @@ const CategoriasPage: React.FC = () => {
           value={categoriaFilter}
           onChange={setCategoriaFilter}
         />
-        {}
         <ActionButtons onProductAdded={fetchProductos} />
       </div>
 
@@ -131,11 +143,11 @@ const CategoriasPage: React.FC = () => {
           productos={currentItems.map((p) => ({
             id: p.id,
             imagen:
-              p.productoImagenes?.find((img) => img.principal)?.imagen ||
+              p.productoImagenes?.find((img: ProductoImagen) => img.principal)?.imagen ||
               p.productoImagenes?.[0]?.imagen ||
               "https://via.placeholder.com/40",
-            producto: p.nombre,
-            descripcion: p.descripcion,
+            producto: p.nombre || "",
+            descripcion: p.descripcion || "",
             precio: p.variantes?.[0]?.precio || 0,
             sku: p.variantes?.[0]?.sku || "Sin SKU",
             estadoStk: "Disponible",

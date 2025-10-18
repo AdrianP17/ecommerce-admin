@@ -1,7 +1,11 @@
-import React from "react";
 import { Search } from "lucide-react";
 
-const SearchBar = ({ text, onChange }) => (
+interface Props {
+  text: string;
+  onChange: (value: string) => void;
+}
+
+const SearchBar = ({ text, onChange } : Props) => (
   <div style={{ flexGrow: 1, maxWidth: 300, position: "relative" }}>
     <Search size={18} color="#999" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)" }} />
     <input

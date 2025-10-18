@@ -1,4 +1,18 @@
-export default function ProductRow({ product, isSelected, onSelect }) {
+interface Product {
+  id: string | number;
+  producto: string;
+  categoria: string;
+  stkDisponible: number;
+  stkTotal: number;
+}
+
+interface ProductRowProps {
+  product: Product;
+  isSelected: boolean;
+  onSelect: (id: Product['id']) => void;
+}
+
+export default function ProductRow({ product, isSelected, onSelect }: ProductRowProps) {
   return (
     <tr>
       <td>

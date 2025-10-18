@@ -1,9 +1,15 @@
 import { useState } from "react";
+import type { ChangeEvent } from "react";
 
-export default function FileInput({ label, onChange }) {
+export interface FileInputProps {
+  label: string;
+  onChange: (file: File | null) => void;
+}
+
+export default function FileInput({ label, onChange }: FileInputProps) {
   const [fileName, setFileName] = useState("Ningún archivo seleccionado");
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     setFileName(file ? file.name : "Ningún archivo seleccionado");
     onChange(file);
